@@ -1,0 +1,34 @@
+-js download/LibraryItemDuplication.jsfl
+-main LibraryItemDuplication
+-cp src
+-lib haxe-jsfl
+
+--next
+
+-js extension_content/lib/LibraryItemDuplication.jsfl
+-main LibraryItemDuplication
+-cp src
+-lib haxe-jsfl
+
+--next
+
+-js download/DuplicationRename.jsfl
+-main DuplicationRename
+-cp src
+-lib haxe-jsfl
+
+--next
+
+-js extension_content/lib/DuplicationRename.jsfl
+-main DuplicationRename
+-cp src
+-lib haxe-jsfl
+
+--next
+
+-js extension_content/index.js
+-main ExtensionIndex
+-cp src
+-cp C:\googledrive\workspace\MyHaxelib\haxelib\src\adobe_extension
+-lib jQueryExtern
+-lib haxe-jsfl
