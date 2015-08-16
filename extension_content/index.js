@@ -11,13 +11,13 @@ ExtensionIndex.prototype = {
 	initialize: function(event) {
 		var _g = this;
 		this.csInterfaceUtil = flash_extension.csinterface.CSInterfaceUtil.create();
-		var runButtonElement = new $("#duplication");
+		var runButtonElement = new $("#run");
 		runButtonElement.mousedown(function(event1) {
 			_g.runJsfl("LibraryItemDuplication.jsfl");
 		});
 		var renameButtonElement = new $("#rename");
 		renameButtonElement.mousedown(function(event2) {
-			_g.runJsfl("DuplicationRename.jsfl");
+			_g.runJsfl("PostpositionCopyRemover.jsfl");
 		});
 	}
 	,runJsfl: function(jsfl) {
@@ -172,7 +172,7 @@ String.__name__ = true;
 Array.__name__ = true;
 haxe.Log.trace = jsfl.Boot.trace;
 ExtensionIndex.JSFL_DUPLICATION = "LibraryItemDuplication.jsfl";
-ExtensionIndex.JSFL_RENAME = "DuplicationRename.jsfl";
+ExtensionIndex.JSFL_RENAME = "PostpositionCopyRemover.jsfl";
 ExtensionIndex.JSFL_DIRECTORY = "lib/";
 jsfl.EventType.DOCUMENT_NEW = "documentNew";
 jsfl.EventType.DOCUMENT_OPENED = "documentOpened";

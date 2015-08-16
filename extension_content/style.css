@@ -6,7 +6,7 @@ body{
 	margin: 0 auto;
 }
 button{
-    width: 70px;
+    width: 80px;
     color: #d7d7d7;
     font-size: 11px;
     border: 1px solid #151515;
@@ -14,4 +14,11 @@ button{
 }
 button:hover{
     background: -webkit-linear-gradient(top, #636363, #4e4e4e);
+}
+.button div {
+    margin-top: 5px;
+}
+.button span {
+    color: #d0d0d0;
+    font-size: 11px;
 }

@@ -15,7 +15,7 @@ class LibraryItemDuplication
 	public function new()
 	{
 		if(Lib.fl.getDocumentDOM() == null) return;
-		Lib.fl.trace("---");
+		Lib.fl.trace("--- Duplicate library items ---");
 
 		library = Lib.fl.getDocumentDOM().library;
 		var selectedItems = library.getSelectedItems();
@@ -27,8 +27,6 @@ class LibraryItemDuplication
 
 		var errorNameSet = execute(selectedItems);
 		outputErrorNameSet(errorNameSet);
-
-		Lib.fl.trace("finish");
 	}
 	private function execute(selectedItems:Array<Item>):Array<String>
 	{
@@ -38,18 +36,22 @@ class LibraryItemDuplication
 			var item = selectedItems[i];
 			if(item.itemType == ItemType.FOLDER) continue;
 
-			var duplicatedName = item.name + Common.POST_POSITION;
-			if(library.itemExists(duplicatedName)){
-				errorNameSet.push(item.name);
+			var itemPath = item.name;
+			var itemDirectory = itemPath.split("/");
+			var symbolName = itemDirectory.pop();
+			var duplicatedName = symbolName + Common.POST_POSITION;
+
+			if(library.itemExists(itemPath + Common.POST_POSITION)){
+				errorNameSet.push(itemPath);
 				continue;
 			}
-			library.selectItem(item.name);
-			if(!library.duplicateItem(item.name)){
-				errorNameSet.push(item.name);
+			library.selectItem(itemPath);
+			if(!library.duplicateItem(itemPath)){
+				errorNameSet.push(itemPath);
 				continue;
 			}
 			library.getSelectedItems()[0].name = duplicatedName;
-			Lib.fl.trace(duplicatedName);
+			Lib.fl.trace('$itemPath -> ${itemDirectory.join("/")}/$duplicatedName');
 		}
 		return errorNameSet;
 	}
@@ -58,7 +60,7 @@ class LibraryItemDuplication
 		var errorNameSetLength = errorNameSet.length;
 		if(errorNameSetLength == 0) return;
 
-		Lib.fl.trace("--- duplication error files ---");
+		Lib.fl.trace("*** failed items ***");
 		for(i in 0...errorNameSetLength)
 		{
 			Lib.fl.trace(errorNameSet[i]);

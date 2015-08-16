@@ -3,7 +3,7 @@ var Common = function() { };
 Common.__name__ = true;
 var LibraryItemDuplication = function() {
 	if(jsfl.Lib.fl.getDocumentDOM() == null) return;
-	jsfl.Lib.fl.trace("---");
+	jsfl.Lib.fl.trace("--- Duplicate library items ---");
 	this.library = jsfl.Lib.fl.getDocumentDOM().library;
 	var selectedItems = this.library.getSelectedItems();
 	if(selectedItems.length == 0) {
@@ -12,7 +12,6 @@ var LibraryItemDuplication = function() {
 	}
 	var errorNameSet = this.execute(selectedItems);
 	this.outputErrorNameSet(errorNameSet);
-	jsfl.Lib.fl.trace("finish");
 };
 LibraryItemDuplication.__name__ = true;
 LibraryItemDuplication.main = function() {
@@ -27,25 +26,28 @@ LibraryItemDuplication.prototype = {
 			var i = _g1++;
 			var item = selectedItems[i];
 			if(item.itemType == jsfl.ItemType.FOLDER) continue;
-			var duplicatedName = item.name + " copy";
-			if(this.library.itemExists(duplicatedName)) {
-				errorNameSet.push(item.name);
+			var itemPath = item.name;
+			var itemDirectory = itemPath.split("/");
+			var symbolName = itemDirectory.pop();
+			var duplicatedName = symbolName + "_copy";
+			if(this.library.itemExists(itemPath + "_copy")) {
+				errorNameSet.push(itemPath);
 				continue;
 			}
-			this.library.selectItem(item.name);
-			if(!this.library.duplicateItem(item.name)) {
-				errorNameSet.push(item.name);
+			this.library.selectItem(itemPath);
+			if(!this.library.duplicateItem(itemPath)) {
+				errorNameSet.push(itemPath);
 				continue;
 			}
 			this.library.getSelectedItems()[0].name = duplicatedName;
-			jsfl.Lib.fl.trace(duplicatedName);
+			jsfl.Lib.fl.trace("" + itemPath + " -> " + itemDirectory.join("/") + "/" + duplicatedName);
 		}
 		return errorNameSet;
 	}
 	,outputErrorNameSet: function(errorNameSet) {
 		var errorNameSetLength = errorNameSet.length;
 		if(errorNameSetLength == 0) return;
-		jsfl.Lib.fl.trace("--- duplication error files ---");
+		jsfl.Lib.fl.trace("*** failed items ***");
 		var _g = 0;
 		while(_g < errorNameSetLength) {
 			var i = _g++;
@@ -218,7 +220,7 @@ jsfl._TweenType.TweenType_Impl_.__name__ = true;
 String.__name__ = true;
 Array.__name__ = true;
 haxe.Log.trace = jsfl.Boot.trace;
-Common.POST_POSITION = " copy";
+Common.POST_POSITION = "_copy";
 jsfl.AlignMode.LEFT = "left";
 jsfl.AlignMode.RIGHT = "right";
 jsfl.AlignMode.TOP = "top";

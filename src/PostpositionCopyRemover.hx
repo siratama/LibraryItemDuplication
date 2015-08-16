@@ -5,17 +5,17 @@ import jsfl.Library;
 import jsfl.ItemType;
 import jsfl.Lib;
 
-class DuplicationRename
+class PostpositionCopyRemover
 {
 	private var library:Library;
 
 	public static function main(){
-		new DuplicationRename();
+		new PostpositionCopyRemover();
 	}
 	public function new()
 	{
 		if(Lib.fl.getDocumentDOM() == null) return;
-		Lib.fl.trace("---");
+		Lib.fl.trace('--- Remove postposition "${Common.POST_POSITION}" ---');
 
 		library = Lib.fl.getDocumentDOM().library;
 		var selectedItems = library.getSelectedItems();
@@ -26,8 +26,6 @@ class DuplicationRename
 		}
 		var errorNameSet = execute(selectedItems);
 		outputErrorNameSet(errorNameSet);
-
-		Lib.fl.trace("finish");
 	}
 	private function execute(selectedItems:Array<Item>):Array<String>
 	{
@@ -37,18 +35,18 @@ class DuplicationRename
 			var item = selectedItems[i];
 			if(item.itemType == ItemType.FOLDER) continue;
 
-			var itemName = item.name;
-
-			var postPositionIndex = itemName.indexOf(Common.POST_POSITION);
+			var itemPath = item.name;
+			var postPositionIndex = itemPath.indexOf(Common.POST_POSITION);
 			if(postPositionIndex == -1) continue;
 
-			itemName.substring(postPositionIndex);
-			if(library.itemExists(itemName)){
-				errorNameSet.push(item.name);
+			var renamePath = itemPath.substring(0, postPositionIndex);
+			if(library.itemExists(renamePath)){
+				errorNameSet.push(itemPath);
 				continue;
 			}
-			item.name = itemName;
-			Lib.fl.trace(itemName);
+			var renameDirectory = renamePath.split("/");
+			item.name = renameDirectory.pop();
+			Lib.fl.trace('$itemPath -> ${item.name}');
 		}
 		return errorNameSet;
 	}
@@ -57,7 +55,7 @@ class DuplicationRename
 		var errorNameSetLength = errorNameSet.length;
 		if(errorNameSetLength == 0) return;
 
-		Lib.fl.trace("--- duplication error files ---");
+		Lib.fl.trace("*** failed items ***");
 		for(i in 0...errorNameSetLength)
 		{
 			Lib.fl.trace(errorNameSet[i]);

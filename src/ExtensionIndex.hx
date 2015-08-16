@@ -8,7 +8,7 @@ class ExtensionIndex
 {
 	private var csInterfaceUtil:CSInterfaceUtil;
 	private static inline var JSFL_DUPLICATION = "LibraryItemDuplication.jsfl";
-	private static inline var JSFL_RENAME = "DuplicationRename.jsfl";
+	private static inline var JSFL_RENAME = "PostpositionCopyRemover.jsfl";
 	private static inline var JSFL_DIRECTORY = "lib/";
 
 	public static function main(){
@@ -21,7 +21,7 @@ class ExtensionIndex
 	{
 		csInterfaceUtil = CSInterfaceUtil.create();
 
-		var runButtonElement = new JQuery("#duplication");
+		var runButtonElement = new JQuery("#run");
 		runButtonElement.mousedown(function(event){
 			runJsfl(JSFL_DUPLICATION);
 		});

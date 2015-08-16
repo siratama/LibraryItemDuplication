@@ -3,7 +3,7 @@ var Common = function() { };
 Common.__name__ = true;
 var DuplicationRename = function() {
 	if(jsfl.Lib.fl.getDocumentDOM() == null) return;
-	jsfl.Lib.fl.trace("---");
+	jsfl.Lib.fl.trace("--- Rename ---");
 	this.library = jsfl.Lib.fl.getDocumentDOM().library;
 	var selectedItems = this.library.getSelectedItems();
 	if(selectedItems.length == 0) {
@@ -12,7 +12,6 @@ var DuplicationRename = function() {
 	}
 	var errorNameSet = this.execute(selectedItems);
 	this.outputErrorNameSet(errorNameSet);
-	jsfl.Lib.fl.trace("finish");
 };
 DuplicationRename.__name__ = true;
 DuplicationRename.main = function() {
@@ -27,23 +26,24 @@ DuplicationRename.prototype = {
 			var i = _g1++;
 			var item = selectedItems[i];
 			if(item.itemType == jsfl.ItemType.FOLDER) continue;
-			var itemName = item.name;
-			var postPositionIndex = itemName.indexOf(" copy");
+			var itemPath = item.name;
+			var postPositionIndex = itemPath.indexOf("_copy");
 			if(postPositionIndex == -1) continue;
-			itemName.substring(postPositionIndex);
-			if(this.library.itemExists(itemName)) {
-				errorNameSet.push(item.name);
+			var renamePath = itemPath.substring(0,postPositionIndex);
+			if(this.library.itemExists(renamePath)) {
+				errorNameSet.push(itemPath);
 				continue;
 			}
-			item.name = itemName;
-			jsfl.Lib.fl.trace(itemName);
+			var renameDirectory = renamePath.split("/");
+			item.name = renameDirectory.pop();
+			jsfl.Lib.fl.trace("" + itemPath + " -> " + item.name);
 		}
 		return errorNameSet;
 	}
 	,outputErrorNameSet: function(errorNameSet) {
 		var errorNameSetLength = errorNameSet.length;
 		if(errorNameSetLength == 0) return;
-		jsfl.Lib.fl.trace("--- duplication error files ---");
+		jsfl.Lib.fl.trace("*** renaming failed files ***");
 		var _g = 0;
 		while(_g < errorNameSetLength) {
 			var i = _g++;
@@ -216,7 +216,7 @@ jsfl._TweenType.TweenType_Impl_.__name__ = true;
 String.__name__ = true;
 Array.__name__ = true;
 haxe.Log.trace = jsfl.Boot.trace;
-Common.POST_POSITION = " copy";
+Common.POST_POSITION = "_copy";
 jsfl.AlignMode.LEFT = "left";
 jsfl.AlignMode.RIGHT = "right";
 jsfl.AlignMode.TOP = "top";

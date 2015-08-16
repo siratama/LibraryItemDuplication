@@ -12,15 +12,15 @@
 
 --next
 
--js download/DuplicationRename.jsfl
--main DuplicationRename
+-js download/PostpositionCopyRemover.jsfl
+-main PostpositionCopyRemover
 -cp src
 -lib haxe-jsfl
 
 --next
 
--js extension_content/lib/DuplicationRename.jsfl
--main DuplicationRename
+-js extension_content/lib/PostpositionCopyRemover.jsfl
+-main PostpositionCopyRemover
 -cp src
 -lib haxe-jsfl
 

@@ -1,5 +1,5 @@
 package ;
 class Common
 {
-	public static inline var POST_POSITION = " copy";
+	public static inline var POST_POSITION = "_copy";
 }

@@ -1,9 +1,9 @@
 (function () { "use strict";
 var Common = function() { };
 Common.__name__ = true;
-var LibraryItemDuplication = function() {
+var PostpositionCopyRemover = function() {
 	if(jsfl.Lib.fl.getDocumentDOM() == null) return;
-	jsfl.Lib.fl.trace("--- Duplicate library items ---");
+	jsfl.Lib.fl.trace("--- Remove postposition \"" + "_copy" + "\" ---");
 	this.library = jsfl.Lib.fl.getDocumentDOM().library;
 	var selectedItems = this.library.getSelectedItems();
 	if(selectedItems.length == 0) {
@@ -13,11 +13,11 @@ var LibraryItemDuplication = function() {
 	var errorNameSet = this.execute(selectedItems);
 	this.outputErrorNameSet(errorNameSet);
 };
-LibraryItemDuplication.__name__ = true;
-LibraryItemDuplication.main = function() {
-	new LibraryItemDuplication();
+PostpositionCopyRemover.__name__ = true;
+PostpositionCopyRemover.main = function() {
+	new PostpositionCopyRemover();
 };
-LibraryItemDuplication.prototype = {
+PostpositionCopyRemover.prototype = {
 	execute: function(selectedItems) {
 		var errorNameSet = [];
 		var _g1 = 0;
@@ -27,20 +27,16 @@ LibraryItemDuplication.prototype = {
 			var item = selectedItems[i];
 			if(item.itemType == jsfl.ItemType.FOLDER) continue;
 			var itemPath = item.name;
-			var itemDirectory = itemPath.split("/");
-			var symbolName = itemDirectory.pop();
-			var duplicatedName = symbolName + "_copy";
-			if(this.library.itemExists(itemPath + "_copy")) {
+			var postPositionIndex = itemPath.indexOf("_copy");
+			if(postPositionIndex == -1) continue;
+			var renamePath = itemPath.substring(0,postPositionIndex);
+			if(this.library.itemExists(renamePath)) {
 				errorNameSet.push(itemPath);
 				continue;
 			}
-			this.library.selectItem(itemPath);
-			if(!this.library.duplicateItem(itemPath)) {
-				errorNameSet.push(itemPath);
-				continue;
-			}
-			this.library.getSelectedItems()[0].name = duplicatedName;
-			jsfl.Lib.fl.trace("" + itemPath + " -> " + itemDirectory.join("/") + "/" + duplicatedName);
+			var renameDirectory = renamePath.split("/");
+			item.name = renameDirectory.pop();
+			jsfl.Lib.fl.trace("" + itemPath + " -> " + item.name);
 		}
 		return errorNameSet;
 	}
@@ -318,5 +314,5 @@ jsfl._TweenType.TweenType_Impl_.MOTION = "motion";
 jsfl._TweenType.TweenType_Impl_.SHAPE = "shape";
 jsfl._TweenType.TweenType_Impl_.NONE = "none";
 jsfl._TweenType.TweenType_Impl_.MOTION_OBJECT = "motion object";
-LibraryItemDuplication.main();
+PostpositionCopyRemover.main();
 })();
