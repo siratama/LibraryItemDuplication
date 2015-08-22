@@ -3,9 +3,21 @@ LibraryItemDuplication
 
 ![LibraryItemDuplication Panel](img/image.png)
 
-Flash CC ライブラリ内 選択したアイテムを一括で複製します。
+LibraryItemDuplication is an extension panel for Flash Pro CC.
+All selected items in the library are duplicated.
 
-![copy rule](img/copy_rule.png)
+LibraryItemDuplication は Flash Pro CC 用 拡張パネルです。
+ライブラリ内 選択したアイテムを一括で複製します。
+
+![copy rule](img/copy-assets/1.png)
+
+![copy rule](img/copy-assets/2.png)
+
+![copy rule](img/copy-assets/3.png)
+
+![copy rule](img/copy-assets/4.png)
+
+![copy rule](img/copy-assets/5.png)
 
 ---
 ## Download (Flash Pro CC)
