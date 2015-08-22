@@ -40,11 +40,6 @@ class LibraryItemDuplication
 		var errorNameSet = [];
 		for(copiedDirectoryPath in duplicationSymbolMap.keys())
 		{
-			/*
-			if(!library.itemExists(copiedDirectoryPath)){
-				library.newFolder(copiedDirectoryPath);
-			}
-			*/
 			var symbols:Array<Symbol> = duplicationSymbolMap[copiedDirectoryPath];
 			for (i in 0...symbols.length)
 			{
@@ -66,7 +61,6 @@ class LibraryItemDuplication
 				library.moveToFolder(symbol.copiedBaseDirectoryPath);
 				library.getSelectedItems()[0].name = symbol.name + CopyNameRule.FILE;
 
-				//trace('${symbol.originalItemPath} -> ${copiedDirectoryPath}${Common.PATH_CLUM}${symbol.name + CopyNameRule.FILE}');
 				trace('${symbol.originalItemPath} -> ${symbol.duplicationItemPath}');
 			}
 		}

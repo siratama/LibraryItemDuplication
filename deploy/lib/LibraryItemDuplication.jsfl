@@ -56,7 +56,7 @@ LibraryItemDuplication.prototype = {
 				if(!this.library.itemExists(symbol.copiedBaseDirectoryPath)) this.library.newFolder(symbol.copiedBaseDirectoryPath);
 				this.library.moveToFolder(symbol.copiedBaseDirectoryPath);
 				this.library.getSelectedItems()[0].name = symbol.name + CopyNameRule.FILE;
-				haxe.Log.trace("" + symbol.originalItemPath + " -> " + symbol.duplicationItemPath,{ fileName : "LibraryItemDuplication.hx", lineNumber : 70, className : "LibraryItemDuplication", methodName : "execute"});
+				haxe.Log.trace("" + symbol.originalItemPath + " -> " + symbol.duplicationItemPath,{ fileName : "LibraryItemDuplication.hx", lineNumber : 64, className : "LibraryItemDuplication", methodName : "execute"});
 			}
 		}
 		return errorNameSet;
