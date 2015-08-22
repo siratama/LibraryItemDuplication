@@ -24,10 +24,43 @@ class LibraryItemDuplication
 			Lib.fl.trace("Select item in library.");
 			return;
 		}
-
-		var errorNameSet = execute(selectedItems);
+		var selectedItemParser = new SelectedItemParser(library, selectedItems);
+		var duplicationSymbolMap = selectedItemParser.execute();
+		var errorNameSet = execute(duplicationSymbolMap);
 		outputErrorNameSet(errorNameSet);
 	}
+	private function execute(duplicationSymbolMap:Map<String, Array<Symbol>>):Array<String>
+	{
+		var errorNameSet = [];
+		for(copiedDirectoryPath in duplicationSymbolMap.keys())
+		{
+			if(!library.itemExists(copiedDirectoryPath)){
+				library.newFolder(copiedDirectoryPath);
+			}
+			var symbols:Array<Symbol> = duplicationSymbolMap[copiedDirectoryPath];
+			for (i in 0...symbols.length)
+			{
+				var symbol = symbols[i];
+				if(library.itemExists(symbol.duplicationItemPath)){
+					errorNameSet.push(symbol.originalItemPath);
+					continue;
+				}
+
+				library.selectItem(symbol.originalItemPath);
+				if(!library.duplicateItem(symbol.originalItemPath)){
+					errorNameSet.push(symbol.originalItemPath);
+					continue;
+				}
+
+				library.moveToFolder(copiedDirectoryPath);
+				library.getSelectedItems()[0].name = symbol.name;
+
+				trace('${symbol.originalItemPath} -> ${copiedDirectoryPath}${Common.PATH_CLUM}${symbol.name}');
+			}
+		}
+		return errorNameSet;
+	}
+	/*
 	private function execute(selectedItems:Array<Item>):Array<String>
 	{
 		var errorNameSet = [];
@@ -55,6 +88,7 @@ class LibraryItemDuplication
 		}
 		return errorNameSet;
 	}
+	*/
 	private function outputErrorNameSet(errorNameSet:Array<String>)
 	{
 		var errorNameSetLength = errorNameSet.length;

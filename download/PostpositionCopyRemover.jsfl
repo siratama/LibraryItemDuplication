@@ -217,6 +217,7 @@ String.__name__ = true;
 Array.__name__ = true;
 haxe.Log.trace = jsfl.Boot.trace;
 Common.POST_POSITION = "_copy";
+Common.PATH_CLUM = "/";
 jsfl.AlignMode.LEFT = "left";
 jsfl.AlignMode.RIGHT = "right";
 jsfl.AlignMode.TOP = "top";
