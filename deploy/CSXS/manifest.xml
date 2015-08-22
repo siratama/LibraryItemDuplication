@@ -25,7 +25,7 @@
 			<DispatchInfo >
 				<Resources>
 				<MainPath>./index.html</MainPath>
-				<ScriptPath>./lib/main.jsfl</ScriptPath>
+                <ScriptPath>./lib/LibraryItemDuplication.jsfl</ScriptPath>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
@@ -35,7 +35,7 @@
 					<Menu>LibraryItemDuplication</Menu>
 					<Geometry>
 						<Size>
-							<Height>250</Height>
+							<Height>150</Height>
 							<Width>200</Width>
 						</Size>
 					</Geometry>

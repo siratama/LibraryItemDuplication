@@ -1,6 +1,8 @@
-(function () { "use strict";
+(function ($hx_exports) { "use strict";
 var Common = function() { };
 Common.__name__ = true;
+var CopyNameRule = function() { };
+CopyNameRule.__name__ = true;
 var HxOverrides = function() { };
 HxOverrides.__name__ = true;
 HxOverrides.iter = function(a) {
@@ -10,7 +12,8 @@ HxOverrides.iter = function(a) {
 		return this.arr[this.cur++];
 	}};
 };
-var LibraryItemDuplication = function() {
+var LibraryItemDuplication = $hx_exports.LibraryItemDuplication = function(folderCopyName,fileCopyName) {
+	if(fileCopyName == null) fileCopyName = "";
 	if(jsfl.Lib.fl.getDocumentDOM() == null) return;
 	jsfl.Lib.fl.trace("--- Duplicate library items ---");
 	this.library = jsfl.Lib.fl.getDocumentDOM().library;
@@ -19,6 +22,8 @@ var LibraryItemDuplication = function() {
 		jsfl.Lib.fl.trace("Select item in library.");
 		return;
 	}
+	CopyNameRule.FOLDER = folderCopyName;
+	CopyNameRule.FILE = fileCopyName;
 	var selectedItemParser = new SelectedItemParser(this.library,selectedItems);
 	var duplicationSymbolMap = selectedItemParser.execute();
 	var errorNameSet = this.execute(duplicationSymbolMap);
@@ -26,7 +31,7 @@ var LibraryItemDuplication = function() {
 };
 LibraryItemDuplication.__name__ = true;
 LibraryItemDuplication.main = function() {
-	new LibraryItemDuplication();
+	new LibraryItemDuplication("_copy");
 };
 LibraryItemDuplication.prototype = {
 	execute: function(duplicationSymbolMap) {
@@ -34,7 +39,6 @@ LibraryItemDuplication.prototype = {
 		var $it0 = duplicationSymbolMap.keys();
 		while( $it0.hasNext() ) {
 			var copiedDirectoryPath = $it0.next();
-			if(!this.library.itemExists(copiedDirectoryPath)) this.library.newFolder(copiedDirectoryPath);
 			var symbols = duplicationSymbolMap.get(copiedDirectoryPath);
 			var _g1 = 0;
 			var _g = symbols.length;
@@ -50,9 +54,10 @@ LibraryItemDuplication.prototype = {
 					errorNameSet.push(symbol.originalItemPath);
 					continue;
 				}
-				this.library.moveToFolder(copiedDirectoryPath);
-				this.library.getSelectedItems()[0].name = symbol.name;
-				haxe.Log.trace("" + symbol.originalItemPath + " -> " + copiedDirectoryPath + "/" + symbol.name,{ fileName : "LibraryItemDuplication.hx", lineNumber : 58, className : "LibraryItemDuplication", methodName : "execute"});
+				if(!this.library.itemExists(symbol.copiedBaseDirectoryPath)) this.library.newFolder(symbol.copiedBaseDirectoryPath);
+				this.library.moveToFolder(symbol.copiedBaseDirectoryPath);
+				this.library.getSelectedItems()[0].name = symbol.name + CopyNameRule.FILE;
+				haxe.Log.trace("" + symbol.originalItemPath + " -> " + symbol.duplicationItemPath,{ fileName : "LibraryItemDuplication.hx", lineNumber : 70, className : "LibraryItemDuplication", methodName : "execute"});
 			}
 		}
 		return errorNameSet;
@@ -154,7 +159,7 @@ SelectedItemParser.prototype = {
 				if(mostShortDirectoryNameSet == null || directoryNameSet.length < mostShortDirectoryNameSet.length) mostShortDirectoryNameSet = directoryNameSet;
 			}
 			var baseDirectoryPath = mostShortDirectoryNameSet.join("/");
-			var copiedDirectoryPath = baseDirectoryPath + "_copy";
+			var copiedDirectoryPath = baseDirectoryPath + CopyNameRule.FOLDER;
 			var _g1 = 0;
 			while(_g1 < symbolsSet.length) {
 				var symbols1 = symbolsSet[_g1];
@@ -188,9 +193,10 @@ Symbols.prototype = {
 		while(_g < _g1.length) {
 			var symbolName = _g1[_g];
 			++_g;
-			var originalItemPath = this.directoryPath + "/" + symbolName;
-			var duplicationItemPath = copiedBaseDirectoryPath + "/" + symbolName;
-			var symbol = new Symbol(symbolName,originalItemPath,duplicationItemPath);
+			var originalItemPath;
+			if(this.directoryPath == "") originalItemPath = symbolName; else originalItemPath = this.directoryPath + "/" + symbolName;
+			var duplicationItemPath = copiedBaseDirectoryPath + "/" + symbolName + CopyNameRule.FILE;
+			var symbol = new Symbol(symbolName,copiedBaseDirectoryPath,originalItemPath,duplicationItemPath);
 			symbols.push(symbol);
 		}
 		return symbols;
@@ -201,7 +207,8 @@ Std.__name__ = true;
 Std.string = function(s) {
 	return js.Boot.__string_rec(s,"");
 };
-var Symbol = function(name,originalItemPath,duplicationItemPath) {
+var Symbol = function(name,copiedBaseDirectoryPath,originalItemPath,duplicationItemPath) {
+	this.copiedBaseDirectoryPath = copiedBaseDirectoryPath;
 	this.duplicationItemPath = duplicationItemPath;
 	this.originalItemPath = originalItemPath;
 	this.name = name;
@@ -237,24 +244,11 @@ haxe.ds.StringMap.prototype = {
 var js = {};
 js.Boot = function() { };
 js.Boot.__name__ = true;
-js.Boot.__unhtml = function(s) {
-	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
-};
 js.Boot.__trace = function(v,i) {
 	var msg;
 	if(i != null) msg = i.fileName + ":" + i.lineNumber + ": "; else msg = "";
 	msg += js.Boot.__string_rec(v,"");
-	if(i != null && i.customParams != null) {
-		var _g = 0;
-		var _g1 = i.customParams;
-		while(_g < _g1.length) {
-			var v1 = _g1[_g];
-			++_g;
-			msg += "," + js.Boot.__string_rec(v1,"");
-		}
-	}
-	var d;
-	if(typeof(document) != "undefined" && (d = document.getElementById("haxe:trace")) != null) d.innerHTML += js.Boot.__unhtml(msg) + "<br/>"; else if(typeof console != "undefined" && console.log != null) console.log(msg);
+	fl.trace(msg);
 };
 js.Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
@@ -388,7 +382,7 @@ jsfl._TweenType.TweenType_Impl_.__name__ = true;
 String.__name__ = true;
 Array.__name__ = true;
 haxe.Log.trace = jsfl.Boot.trace;
-Common.POST_POSITION = "_copy";
+Common.DEFALUT_FOLDER_COPY_NAME = "_copy";
 Common.PATH_CLUM = "/";
 jsfl.AlignMode.LEFT = "left";
 jsfl.AlignMode.RIGHT = "right";
@@ -488,4 +482,4 @@ jsfl._TweenType.TweenType_Impl_.SHAPE = "shape";
 jsfl._TweenType.TweenType_Impl_.NONE = "none";
 jsfl._TweenType.TweenType_Impl_.MOTION_OBJECT = "motion object";
 LibraryItemDuplication.main();
-})();
+})(typeof window != "undefined" ? window : exports);

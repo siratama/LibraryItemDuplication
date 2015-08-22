@@ -1,4 +1,4 @@
-package ;
+package;
 
 import jsfl.Library;
 import jsfl.Item;
@@ -113,7 +113,7 @@ class SelectedItemParser
 				}
 			}
 			var baseDirectoryPath = mostShortDirectoryNameSet.join(Common.PATH_CLUM);
-			var copiedDirectoryPath = baseDirectoryPath + Common.POST_POSITION;
+			var copiedDirectoryPath = baseDirectoryPath + CopyNameRule.FOLDER;
 
 			for(symbols in symbolsSet)
 			{
@@ -145,9 +145,10 @@ class Symbols
 		var copiedBaseDirectoryPath = copiedDirectoryPath + branchPath;
 		for (symbolName in symbolNames)
 		{
-			var originalItemPath = directoryPath + Common.PATH_CLUM + symbolName;
-			var duplicationItemPath = copiedBaseDirectoryPath + Common.PATH_CLUM + symbolName;
-			var symbol = new Symbol(symbolName, originalItemPath, duplicationItemPath);
+			var originalItemPath = (directoryPath == "") ? symbolName: directoryPath + Common.PATH_CLUM + symbolName;
+			var duplicationItemPath = copiedBaseDirectoryPath + Common.PATH_CLUM + symbolName + CopyNameRule.FILE;
+
+			var symbol = new Symbol(symbolName, copiedBaseDirectoryPath, originalItemPath, duplicationItemPath);
 			symbols.push(symbol);
 		}
 		return symbols;

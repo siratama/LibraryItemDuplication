@@ -1,34 +1,24 @@
 -js download/LibraryItemDuplication.jsfl
 -main LibraryItemDuplication
--cp src
+-cp src/jsfl
+-cp src/common
 -lib haxe-jsfl
+-D jsfl
 
 --next
 
--js extension_content/lib/LibraryItemDuplication.jsfl
+-js deploy/lib/LibraryItemDuplication.jsfl
 -main LibraryItemDuplication
--cp src
+-cp src/jsfl
+-cp src/common
 -lib haxe-jsfl
 
 --next
 
--js download/PostpositionCopyRemover.jsfl
--main PostpositionCopyRemover
--cp src
--lib haxe-jsfl
-
---next
-
--js extension_content/lib/PostpositionCopyRemover.jsfl
--main PostpositionCopyRemover
--cp src
--lib haxe-jsfl
-
---next
-
--js extension_content/index.js
+-js deploy/index.js
 -main ExtensionIndex
--cp src
+-cp src/common
+-cp src/extension
 -cp C:\googledrive\workspace\MyHaxelib\haxelib\src\adobe_extension
 -lib jQueryExtern
 -lib haxe-jsfl

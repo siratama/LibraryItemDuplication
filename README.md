@@ -5,19 +5,7 @@ LibraryItemDuplication
 
 Flash CC ライブラリ内 選択したアイテムを一括で複製します。
 
-TestMovieClip
-SampleSprite
-
-TestMovieClip copy
-SampleSprite copy
-
-複製したアイテム名に付与された「 copy」という文字列を一括で削除する機能付きです。
-
-TestMovieClip copy
-SampleSprite copy
-
-TestMovieClip
-SampleSprite
+![copy rule](img/copy_rule.png)
 
 ---
 ## Download (Flash Pro CC)
@@ -34,5 +22,4 @@ Flash CC 13.1 以降のバージョンで利用可能です。Windows の場合�
 ## Download (JSFL)
 
 * [LibraryItemDuplication.jsfl](https://raw.github.com/siratama/LibraryItemDuplication/master/download/LibraryItemDuplication.jsfl)
-* [DuplicationRename.jsfl](https://raw.github.com/siratama/LibraryItemDuplication/master/download/DuplicationRename.jsfl)
 
